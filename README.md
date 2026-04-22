@@ -15,7 +15,7 @@ e uma explicação em linguagem natural.
 [![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind](https://img.shields.io/badge/Tailwind-3.4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Pydantic AI](https://img.shields.io/badge/Pydantic_AI-agent-E92063?logo=pydantic&logoColor=white)](https://ai.pydantic.dev/)
-[![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
+[![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash--Lite-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
 [![SQLite](https://img.shields.io/badge/SQLite-read--only-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](#licença)
 
@@ -50,7 +50,7 @@ entregas?"* sem escrever SQL.
 **Solução.** Este projeto é um **agente conversacional** que:
 
 - Recebe a pergunta em **PT-BR** no chat.
-- Usa **Gemini 2.5 Flash** via **Pydantic AI** para gerar a SQL apropriada.
+- Usa **Gemini 2.5 Flash-Lite** via **Pydantic AI** para gerar a SQL apropriada.
 - Valida a query em **5 camadas de guardrails** (só leitura, sem DDL/DML,
   LIMIT obrigatório no nível externo).
 - Executa no **SQLite em modo read-only** e devolve os dados.
@@ -79,7 +79,7 @@ as 10 perguntas canônicas do enunciado.
 | **Python 3.11** | Linguagem do backend | Exigida pelo enunciado; vasto ecossistema de IA. |
 | **FastAPI 0.115** | Servidor HTTP | Async nativo, Pydantic integrado, Swagger automático em `/docs`, CORS em uma linha. |
 | **Pydantic AI** | Framework de agente | Type-safe, tool calling com validação automática, suporte nativo ao Gemini, muito menos boilerplate que LangChain. |
-| **Gemini 2.5 Flash** | LLM | Exigido pelo enunciado; barato, rápido e muito bom para Text-to-SQL quando recebe schema bem anotado. |
+| **Gemini 2.5 Flash-Lite** | LLM | Permitido pelo enunciado (Flash ou Flash-Lite); é o mais leve da família Gemini 2.5 — menor custo e menor latência, suficiente para Text-to-SQL quando recebe schema bem anotado no prompt. |
 | **SQLite (read-only URI)** | Banco de dados | Arquivo único (`banco.db`), sem servidor; modo `file:...?mode=ro` garante imutabilidade mesmo se algum guardrail falhar. |
 | **fastembed (ONNX)** | RAG local | MiniLM multilíngue via ONNX Runtime (~200 MB) em vez de `torch` (~1.2 GB). Seleciona só as tabelas relevantes do schema e economiza 30-60% dos tokens do system prompt. Fallback automático para BM25 puro-Python. |
 | **uvicorn** | ASGI server | Servidor async padrão do FastAPI, com hot-reload em dev. |
@@ -109,7 +109,7 @@ flowchart LR
   RAG --> AG["Pydantic AI Agent"]
   BE --> HS["HistoryStore (memoria)"]
   HS --> AG
-  AG --> G["Gemini 2.5 Flash"]
+  AG --> G["Gemini 2.5 Flash-Lite"]
   G -->|"tool call"| T["execute_sql"]
   T --> GR["Guardrails"]
   GR --> DB[("SQLite read-only")]
@@ -257,8 +257,8 @@ renderizam e recebem callbacks.
 | **Consumidores** | Estados com maior volume + maior ticket médio; Estados com maior atraso nas entregas |
 | **Vendedores e Produtos** | Top 5 produtos mais vendidos por estado; Categorias com maior taxa de avaliação negativa |
 
-> **Cobertura medida:** 9/10 perguntas passam no eval automatizado (HTTP
-> 200 + SQL válida + ≥ 1 linha). Ver
+> **Cobertura medida:** 10/10 perguntas passam no eval automatizado — 100%
+> de sucesso (HTTP 200 + SQL válida + ≥ 1 linha). Ver
 > [backend/eval/eval_report.md](backend/eval/eval_report.md) para o
 > relatório completo com SQL gerada, colunas retornadas e tempo por
 > pergunta.
@@ -316,7 +316,7 @@ Abra `backend\.env` e preencha sua chave Gemini:
 ```
 GEMINI_API_KEY=AIza...sua_chave_aqui
 DB_PATH=./banco.db
-MODEL=google-gla:gemini-2.5-flash
+MODEL=google-gla:gemini-2.5-flash-lite
 ```
 
 > **Atenção — API key.** Se a chave vazar (screenshot, PR, etc), revogue e

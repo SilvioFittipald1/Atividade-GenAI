@@ -21,7 +21,7 @@ if _api_key:
     os.environ["GOOGLE_API_KEY"] = _api_key
     os.environ["GEMINI_API_KEY"] = _api_key
 
-MODEL_SLUG = os.getenv("MODEL", "google-gla:gemini-2.5-flash")
+MODEL_SLUG = os.getenv("MODEL", "google-gla:gemini-2.5-flash-lite")
 
 
 SYSTEM_PROMPT = """Voce e um assistente de analise de dados para um sistema de e-commerce brasileiro.

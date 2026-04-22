@@ -35,7 +35,7 @@ flowchart LR
   Cache -->|"sim"| Resp["AskResponse"]
   Cache -->|"nao"| RAG["Retriever RAG"]
   RAG --> Agent["Pydantic AI Agent"]
-  Agent --> Gemini["Gemini 2.5 Flash"]
+  Agent --> Gemini["Gemini 2.5 Flash-Lite"]
   Gemini -->|"tool call"| Tool["execute_sql"]
   Tool --> Guard["Guardrails"]
   Guard --> DB[("SQLite read-only")]
@@ -523,7 +523,7 @@ Resposta resumida:
 
 | Decisão | Por quê |
 |---|---|
-| **Pydantic AI + Gemini 2.5 Flash** | Tool calling nativo + output estruturado; Flash é barato e rápido para text-to-SQL. |
+| **Pydantic AI + Gemini 2.5 Flash-Lite** | Tool calling nativo + output estruturado; Flash-Lite é o mais leve da família Gemini 2.5 — ideal para Text-to-SQL em volume com baixa latência. |
 | **SQLite read-only via URI** | Banco local simples (~63 MB), sem servidor; `?mode=ro` garante imutabilidade. |
 | **Guardrails em regex** | Zero dependências extras; cobre 99% das variações; `fetchmany(MAX_ROWS)` é a guarda dura. |
 | **RAG local (fastembed ONNX)** | ~200 MB na venv vs ~1.2 GB com torch; qualidade equivalente para schema pequeno. |
@@ -584,8 +584,8 @@ Resposta resumida:
 Alterar `MODEL` no `.env`:
 
 ```
-MODEL=google-gla:gemini-2.5-flash         # default
-MODEL=google-gla:gemini-2.5-flash-lite    # mais barato, menos preciso
+MODEL=google-gla:gemini-2.5-flash-lite    # default (mais leve, menor custo)
+MODEL=google-gla:gemini-2.5-flash         # alternativa (um pouco mais preciso, mais caro)
 MODEL=google-gla:gemini-2.5-pro           # mais preciso, mais caro
 ```
 
@@ -644,6 +644,6 @@ flowchart TD
 
 ---
 
-> **Feito.** Próximos passos sugeridos: abrir
-> [ComoRodar.md](ComoRodar.md) para subir o ambiente e rodar as 10
+> **Feito.** Próximos passos sugeridos: abrir o
+> [README principal](../README.md) para subir o ambiente e rodar as 10
 > perguntas canônicas via `python -m eval.run_eval`.

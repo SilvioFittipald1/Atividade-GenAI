@@ -159,7 +159,7 @@ sequenceDiagram
    - Chama `askQuestion(trimmed, conversationId)`.
 5. **`services/api.ts`** faz `POST /ask`
    ([api.ts:26](Atividade-GenAI/frontend/src/services/api.ts)).
-6. **Backend processa** (ver [ExplicacaoBackend.md](ExplicacaoBackend.md)) e
+6. **Backend processa** (ver [ExplicacaoBackend.md](../backend/ExplicacaoBackend.md)) e
    devolve `AskResponse` com sql/columns/rows/explanation/suggestions/...
 7. **`useChat` atualiza a mensagem placeholder** com a resposta completa e
    persiste a conversa em `localStorage` via
@@ -481,6 +481,6 @@ flowchart TD
 
 > **Pronto.** Próximos passos sugeridos:
 > - rodar `pnpm dev` no `frontend/` + `uvicorn app.main:app` no `backend/`
->   (ver [ComoRodar.md](ComoRodar.md));
-> - ler [ExplicacaoBackend.md](ExplicacaoBackend.md) para entender o lado
->   que essa UI consome.
+>   (ver o [README principal](../README.md) para o passo a passo completo);
+> - ler o [guia do backend](../backend/ExplicacaoBackend.md) para entender
+>   o lado que essa UI consome.
