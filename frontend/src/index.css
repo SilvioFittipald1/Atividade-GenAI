@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0f172a;
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(34, 197, 94, 0.12),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #f0fdf4 0%, #ffffff 40%, #ffffff 100%);
+  background-attachment: fixed;
+}
+
+html.dark body {
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(22, 163, 74, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #0a1a12 0%, #020617 40%, #020617 100%);
+  color: #e2e8f0;
+}
+
+@layer utilities {
+  .scrollbar-soft::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-soft::-webkit-scrollbar-thumb {
+    background: rgba(22, 163, 74, 0.25);
+    border-radius: 8px;
+  }
+  .scrollbar-soft::-webkit-scrollbar-thumb:hover {
+    background: rgba(22, 163, 74, 0.45);
+  }
+  .scrollbar-soft::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
