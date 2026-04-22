@@ -455,6 +455,6 @@ Para mergulhar no código:
 
 ---
 
-Feito com Python, TypeScript e Gemini 2.5.
+
 
 </div>
