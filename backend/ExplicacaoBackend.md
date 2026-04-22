@@ -85,7 +85,8 @@ Vamos seguir **"Top 10 produtos mais vendidos"** do navegador até a resposta.
 
 ### Passo 1 — Frontend envia o POST
 
-O React em `frontend/src/App.tsx` monta o payload e dispara:
+O hook `useChat` (em `frontend/src/hooks/useChat.ts`, função `send`) monta o
+payload e chama `askQuestion` do `services/api.ts`, que dispara:
 
 ```json
 POST http://127.0.0.1:8000/ask
@@ -99,9 +100,9 @@ POST http://127.0.0.1:8000/ask
 
 O FastAPI usa o Pydantic para garantir que `question` tem pelo menos 1
 caractere e que `conversation_id` é string. Se passar, chama o handler
-`ask(req)` definido em [main.py](Atividade-GenAI/backend/app/main.py).
+`ask(req)` definido em [main.py](app/main.py).
 
-```146:156:Atividade-GenAI/backend/app/main.py
+```130:139:app/main.py
 @app.post("/ask", response_model=AskResponse)
 async def ask(req: AskRequest) -> AskResponse:
     cached = store.cache_get(req.conversation_id, req.question)
@@ -156,7 +157,7 @@ para montarmos a `AskResponse` sem transportar dados pelo LLM (tokens caros).
 
 ### Passo 6 — Executa o agente
 
-```185:190:Atividade-GenAI/backend/app/main.py
+```166:171:app/main.py
     try:
         result = await agent.run(
             req.question,
@@ -178,7 +179,7 @@ Dentro de `agent.run`, o Pydantic AI:
 
 ### Passo 7 — Monta e retorna a `AskResponse`
 
-```224:240:Atividade-GenAI/backend/app/main.py
+```205:221:app/main.py
     response = AskResponse(
         sql=deps.last_sql or "",
         columns=deps.last_columns,
@@ -263,7 +264,7 @@ python -m app.agent "Top 10 produtos mais vendidos"
 formatar para que seja reutilizável pela tool do agente **e** pelo endpoint
 `/execute-sql` sem duplicação.
 
-```14:37:Atividade-GenAI/backend/app/tools.py
+```15:32:app/tools.py
 def run_query(query: str) -> tuple[str, list[str], list[dict[str, Any]]]:
     """Valida, sanitiza e executa uma SQL de leitura.
 

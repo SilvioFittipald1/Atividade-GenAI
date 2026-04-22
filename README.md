@@ -17,7 +17,6 @@ e uma explicação em linguagem natural.
 [![Pydantic AI](https://img.shields.io/badge/Pydantic_AI-agent-E92063?logo=pydantic&logoColor=white)](https://ai.pydantic.dev/)
 [![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash--Lite-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
 [![SQLite](https://img.shields.io/badge/SQLite-read--only-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](#licença)
 
 </div>
 
@@ -36,7 +35,7 @@ e uma explicação em linguagem natural.
 9. [Avaliação automática](#9-avaliação-automática)
 10. [Documentação complementar](#10-documentação-complementar)
 11. [Limitações conhecidas](#11-limitações-conhecidas)
-12. [Créditos e licença](#12-créditos-e-licença)
+12. [Créditos](#12-créditos)
 
 ---
 
@@ -270,7 +269,7 @@ renderizam e recebem callbacks.
 | Ferramenta | Versão mínima | Como verificar |
 |---|---|---|
 | Python | 3.11 | `python --version` |
-| Node.js | 18 | `node --version` |
+| Node.js | 20.19+ ou 22 LTS | `node --version` |
 | pnpm | 8 | `pnpm --version` |
 | Git | qualquer | `git --version` |
 | Chave Gemini | free tier OK | https://aistudio.google.com/apikey |
@@ -444,12 +443,11 @@ Para mergulhar no código:
 
 ---
 
-## 12) Créditos e licença
+## 12) Créditos
 
 - **Base de dados.** Fornecida pela atividade (**Visagio | Rocket Lab 2026**).
   Contém dados históricos de um marketplace brasileiro entre 2016-2018.
 - **Desenvolvimento.** Silvio Fittipaldi, 2026.
-- **Licença.** MIT — veja `LICENSE` (ou adicione um se for publicar).
 
 <div align="center">
 

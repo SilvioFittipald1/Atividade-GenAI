@@ -145,28 +145,28 @@ sequenceDiagram
 ### Passo a passo com arquivo:linha
 
 1. **Clique no chip** — `ExampleQuestions.onPick(text)` é chamado
-   ([ExampleQuestions.tsx:173](Atividade-GenAI/frontend/src/components/organisms/ExampleQuestions.tsx)).
+   ([ExampleQuestions.tsx:173](src/components/organisms/ExampleQuestions.tsx)).
 2. **Prop sobe até ChatPage** — `onExamplePick={setInput}` em
-   [ChatPage.tsx:141](Atividade-GenAI/frontend/src/pages/ChatPage.tsx).
+   [ChatPage.tsx:141](src/pages/ChatPage.tsx).
    `input` passa a ser o texto selecionado.
 3. **Usuário pressiona Enter** — `ChatInput` detecta key `Enter` sem Shift e
    chama `onSend(question)` em
-   [ChatInput.tsx:28](Atividade-GenAI/frontend/src/components/organisms/ChatInput.tsx).
+   [ChatInput.tsx:28](src/components/organisms/ChatInput.tsx).
 4. **`useChat.send` assume o controle**
-   ([useChat.ts:39](Atividade-GenAI/frontend/src/hooks/useChat.ts)):
+   ([useChat.ts:39](src/hooks/useChat.ts)):
    - Adiciona `userMsg` + placeholder `assistantPlaceholder { loading: true }`.
    - Limpa o input, seta `loading=true`.
    - Chama `askQuestion(trimmed, conversationId)`.
 5. **`services/api.ts`** faz `POST /ask`
-   ([api.ts:26](Atividade-GenAI/frontend/src/services/api.ts)).
+   ([api.ts:26](src/services/api.ts)).
 6. **Backend processa** (ver [ExplicacaoBackend.md](../backend/ExplicacaoBackend.md)) e
    devolve `AskResponse` com sql/columns/rows/explanation/suggestions/...
 7. **`useChat` atualiza a mensagem placeholder** com a resposta completa e
    persiste a conversa em `localStorage` via
-   [storage.ts:32](Atividade-GenAI/frontend/src/services/storage.ts).
+   [storage.ts:32](src/services/storage.ts).
 8. **`MessageList` recebe o novo `messages[]`** e renderiza cada item como
    `MessageBubble`
-   ([MessageList.tsx:38](Atividade-GenAI/frontend/src/components/organisms/MessageList.tsx)).
+   ([MessageList.tsx:38](src/components/organisms/MessageList.tsx)).
 9. **`MessageBubble` compõe o resultado**: `SchemaMiniMap` (RAG), `SQLBlock`
    (colapsável/editável), `ResultTable`, `ChartPanel`, `SuggestionChips`.
 10. **Usuário vê a resposta** — com opção de clicar numa sugestão para
@@ -185,44 +185,44 @@ sequenceDiagram
 
 | Componente | O que faz |
 |---|---|
-| [Button](Atividade-GenAI/frontend/src/components/atoms/Button.tsx) | 4 variants (`primary`, `secondary`, `ghost`, `danger`), 3 tamanhos, com `loading` (troca children por spinner), ícones L/R, `fullWidth`. |
-| [IconButton](Atividade-GenAI/frontend/src/components/atoms/IconButton.tsx) | Botão quadrado para ícones; 3 tones × 2 tamanhos. Usado em toggles, delete, etc. |
-| [Badge](Atividade-GenAI/frontend/src/components/atoms/Badge.tsx) | Pílula pequena (`neutral`, `brand`, `amber`, `rose`) — ex: "Em cache", "PK", "NOT NULL". |
-| [Spinner](Atividade-GenAI/frontend/src/components/atoms/Spinner.tsx) | SVG animate-spin, só estilo; consumido pelo `Button` e `LoadingDots`. |
-| [Logo](Atividade-GenAI/frontend/src/components/atoms/Logo.tsx) | Marca com gradiente verde + ícone de folha/chat. |
-| [ModelBadge](Atividade-GenAI/frontend/src/components/atoms/ModelBadge.tsx) | Chip que mostra o modelo Gemini em uso (ou "Backend offline"). |
-| [ThemeToggle](Atividade-GenAI/frontend/src/components/atoms/ThemeToggle.tsx) | Botão sol/lua que alterna o tema via `useTheme`. |
+| [Button](src/components/atoms/Button.tsx) | 4 variants (`primary`, `secondary`, `ghost`, `danger`), 3 tamanhos, com `loading` (troca children por spinner), ícones L/R, `fullWidth`. |
+| [IconButton](src/components/atoms/IconButton.tsx) | Botão quadrado para ícones; 3 tones × 2 tamanhos. Usado em toggles, delete, etc. |
+| [Badge](src/components/atoms/Badge.tsx) | Pílula pequena (`neutral`, `brand`, `amber`, `rose`) — ex: "Em cache", "PK", "NOT NULL". |
+| [Spinner](src/components/atoms/Spinner.tsx) | SVG animate-spin, só estilo; consumido pelo `Button` e `LoadingDots`. |
+| [Logo](src/components/atoms/Logo.tsx) | Marca com gradiente verde + ícone de folha/chat. |
+| [ModelBadge](src/components/atoms/ModelBadge.tsx) | Chip que mostra o modelo Gemini em uso (ou "Backend offline"). |
+| [ThemeToggle](src/components/atoms/ThemeToggle.tsx) | Botão sol/lua que alterna o tema via `useTheme`. |
 
 ### Molecules (7) — composições simples
 
 | Componente | O que faz |
 |---|---|
-| [CategoryCard](Atividade-GenAI/frontend/src/components/molecules/CategoryCard.tsx) | Card de categoria com ícone + lista de perguntas clicáveis (usado em `ExampleQuestions`). |
-| [ConversationItem](Atividade-GenAI/frontend/src/components/molecules/ConversationItem.tsx) | Linha do histórico: título + data + botões renomear/excluir; single-click abre, double-click renomeia. |
-| [ErrorBanner](Atividade-GenAI/frontend/src/components/molecules/ErrorBanner.tsx) | Banner rosa com ícone, usado quando o `/ask` falha. |
-| [LoadingDots](Atividade-GenAI/frontend/src/components/molecules/LoadingDots.tsx) | 3 bolinhas bouncing + mensagem rotativa ("Analisando…", "Gerando SQL…", etc a cada 1.4s). |
-| [SchemaMiniMap](Atividade-GenAI/frontend/src/components/molecules/SchemaMiniMap.tsx) | Chips das 7 tabelas; destaca as que o RAG selecionou e mostra "-XX% tokens". Clicar abre o Schema Explorer focado. |
-| [ShortcutsModal](Atividade-GenAI/frontend/src/components/molecules/ShortcutsModal.tsx) | Modal com tabela de atalhos (`?`, `Ctrl+B`, `Ctrl+/`, `Ctrl+K`, `Esc`). |
-| [SuggestionChips](Atividade-GenAI/frontend/src/components/molecules/SuggestionChips.tsx) | Chips "Continue explorando" (até 3 follow-ups sugeridos pelo agente). |
+| [CategoryCard](src/components/molecules/CategoryCard.tsx) | Card de categoria com ícone + lista de perguntas clicáveis (usado em `ExampleQuestions`). |
+| [ConversationItem](src/components/molecules/ConversationItem.tsx) | Linha do histórico: título + data + botões renomear/excluir; single-click abre, double-click renomeia. |
+| [ErrorBanner](src/components/molecules/ErrorBanner.tsx) | Banner rosa com ícone, usado quando o `/ask` falha. |
+| [LoadingDots](src/components/molecules/LoadingDots.tsx) | 3 bolinhas bouncing + mensagem rotativa ("Analisando…", "Gerando SQL…", etc a cada 1.4s). |
+| [SchemaMiniMap](src/components/molecules/SchemaMiniMap.tsx) | Chips das 7 tabelas; destaca as que o RAG selecionou e mostra "-XX% tokens". Clicar abre o Schema Explorer focado. |
+| [ShortcutsModal](src/components/molecules/ShortcutsModal.tsx) | Modal com tabela de atalhos (`?`, `Ctrl+B`, `Ctrl+/`, `Ctrl+K`, `Esc`). |
+| [SuggestionChips](src/components/molecules/SuggestionChips.tsx) | Chips "Continue explorando" (até 3 follow-ups sugeridos pelo agente). |
 
 ### Organisms (10) — blocos principais
 
 | Componente | O que faz |
 |---|---|
-| [Header](Atividade-GenAI/frontend/src/components/organisms/Header.tsx) | Topo sticky: Logo + título + ModelBadge + status online + ThemeToggle + botões (Schema Explorer, Atalhos, Exportar .md, Nova conversa). |
-| [Sidebar](Atividade-GenAI/frontend/src/components/organisms/Sidebar.tsx) | Drawer esquerdo com histórico de conversas agrupado por data (`Hoje`, `Ontem`, `Últimos 7 dias`...), busca por título, lista de tabelas do banco. |
-| [ChatInput](Atividade-GenAI/frontend/src/components/organisms/ChatInput.tsx) | Textarea auto-expansivel (até 200px) + botão Enviar. Enter envia; Shift+Enter quebra linha. |
-| [MessageList](Atividade-GenAI/frontend/src/components/organisms/MessageList.tsx) | Scroller com a lista de bolhas; auto-scroll para o fim a cada nova mensagem. Se `messages` vazio, mostra `ExampleQuestions`. |
-| [MessageBubble](Atividade-GenAI/frontend/src/components/organisms/MessageBubble.tsx) | A bolha (user vs assistant). Assistant mostra badges (cache/manualmente editada/duração), SchemaMiniMap, explicação, SQLBlock, ResultTable, ChartPanel, SuggestionChips. |
-| [ExampleQuestions](Atividade-GenAI/frontend/src/components/organisms/ExampleQuestions.tsx) | Tela inicial com hero + grid de 5 `CategoryCard` × 2 perguntas cada (as 10 canônicas). |
-| [SQLBlock](Atividade-GenAI/frontend/src/components/organisms/SQLBlock.tsx) | Bloco colapsável com o SQL gerado; botões Copiar e Editar. No modo edição, permite reexecutar a SQL via `POST /execute-sql` e atualizar a mesma bolha. |
-| [ResultTable](Atividade-GenAI/frontend/src/components/organisms/ResultTable.tsx) | Tabela de resultados com scroll interno, header sticky, zebra rows, botão "Baixar CSV" (UTF-8 BOM, separador `;`). |
-| [ChartPanel](Atividade-GenAI/frontend/src/components/organisms/ChartPanel.tsx) | Renderiza automaticamente Bar/Line/Pie quando o resultado tem 2 colunas e a 2ª é ≥80% numérica; 3 botões para alternar o tipo de gráfico. Tema claro/escuro aplicado. |
-| [SchemaExplorer](Atividade-GenAI/frontend/src/components/organisms/SchemaExplorer.tsx) | Drawer direito com introspecção do banco: linhas por tabela, colunas (tipo, PK, NOT NULL), top-values das categóricas em barras, min/avg/max das numéricas, amostra, FKs lógicas clicáveis, botão "Inserir exemplo". |
+| [Header](src/components/organisms/Header.tsx) | Topo sticky: Logo + título + ModelBadge + status online + ThemeToggle + botões (Schema Explorer, Atalhos, Exportar .md, Nova conversa). |
+| [Sidebar](src/components/organisms/Sidebar.tsx) | Drawer esquerdo com histórico de conversas agrupado por data (`Hoje`, `Ontem`, `Últimos 7 dias`...), busca por título, lista de tabelas do banco. |
+| [ChatInput](src/components/organisms/ChatInput.tsx) | Textarea auto-expansivel (até 200px) + botão Enviar. Enter envia; Shift+Enter quebra linha. |
+| [MessageList](src/components/organisms/MessageList.tsx) | Scroller com a lista de bolhas; auto-scroll para o fim a cada nova mensagem. Se `messages` vazio, mostra `ExampleQuestions`. |
+| [MessageBubble](src/components/organisms/MessageBubble.tsx) | A bolha (user vs assistant). Assistant mostra badges (cache/manualmente editada/duração), SchemaMiniMap, explicação, SQLBlock, ResultTable, ChartPanel, SuggestionChips. |
+| [ExampleQuestions](src/components/organisms/ExampleQuestions.tsx) | Tela inicial com hero + grid de 5 `CategoryCard` × 2 perguntas cada (as 10 canônicas). |
+| [SQLBlock](src/components/organisms/SQLBlock.tsx) | Bloco colapsável com o SQL gerado; botões Copiar e Editar. No modo edição, permite reexecutar a SQL via `POST /execute-sql` e atualizar a mesma bolha. |
+| [ResultTable](src/components/organisms/ResultTable.tsx) | Tabela de resultados com scroll interno, header sticky, zebra rows, botão "Baixar CSV" (UTF-8 BOM, separador `;`). |
+| [ChartPanel](src/components/organisms/ChartPanel.tsx) | Renderiza automaticamente Bar/Line/Pie quando o resultado tem 2 colunas e a 2ª é ≥80% numérica; 3 botões para alternar o tipo de gráfico. Tema claro/escuro aplicado. |
+| [SchemaExplorer](src/components/organisms/SchemaExplorer.tsx) | Drawer direito com introspecção do banco: linhas por tabela, colunas (tipo, PK, NOT NULL), top-values das categóricas em barras, min/avg/max das numéricas, amostra, FKs lógicas clicáveis, botão "Inserir exemplo". |
 
 ### Templates (1)
 
-- [ChatLayout](Atividade-GenAI/frontend/src/components/templates/ChatLayout.tsx)
+- [ChatLayout](src/components/templates/ChatLayout.tsx)
   — flex vertical `h-screen`, injeta `sidebar`, `header`, `messages`, `input`
   sem conhecer nenhum detalhe de negócio.
 
@@ -234,30 +234,30 @@ sequenceDiagram
 
 | Hook | Responsabilidade |
 |---|---|
-| [useChat](Atividade-GenAI/frontend/src/hooks/useChat.ts) | Gerencia `conversationId`, `messages`, `input`, `loading`. Expõe `send`, `reset`, `resetLocal`, `reexecuteSql`, `openConversation`, `removeConversation`, `renameConversation`. Único lugar que fala com `services/api` e `services/storage` pelo chat. |
-| [useConversations](Atividade-GenAI/frontend/src/hooks/useConversations.ts) | Lê a lista de conversas do `localStorage` e expõe `refresh` + `clearAll`. |
-| [useHealth](Atividade-GenAI/frontend/src/hooks/useHealth.ts) | Faz `GET /health` na montagem; expõe `model`, `online`, `tables`, `schema`, `loading`. Nunca refaz. |
-| [useHotkeys](Atividade-GenAI/frontend/src/hooks/useHotkeys.ts) | Registra listener global de teclado. Ignora quando foco está em `input/textarea/select/contentEditable`, exceto `Escape` (sempre tratado). |
-| [useTheme](Atividade-GenAI/frontend/src/hooks/useTheme.tsx) | Context provider `ThemeProvider` + hook `useTheme`. Persiste em `ecom-agent-theme`. Padrão inicial: `prefers-color-scheme`. |
+| [useChat](src/hooks/useChat.ts) | Gerencia `conversationId`, `messages`, `input`, `loading`. Expõe `send`, `reset`, `resetLocal`, `reexecuteSql`, `openConversation`, `removeConversation`, `renameConversation`. Único lugar que fala com `services/api` e `services/storage` pelo chat. |
+| [useConversations](src/hooks/useConversations.ts) | Lê a lista de conversas do `localStorage` e expõe `refresh` + `clearAll`. |
+| [useHealth](src/hooks/useHealth.ts) | Faz `GET /health` na montagem; expõe `model`, `online`, `tables`, `schema`, `loading`. Nunca refaz. |
+| [useHotkeys](src/hooks/useHotkeys.ts) | Registra listener global de teclado. Ignora quando foco está em `input/textarea/select/contentEditable`, exceto `Escape` (sempre tratado). |
+| [useTheme](src/hooks/useTheme.tsx) | Context provider `ThemeProvider` + hook `useTheme`. Persiste em `ecom-agent-theme`. Padrão inicial: `prefers-color-scheme`. |
 
 ### Services (2)
 
 | Service | Responsabilidade |
 |---|---|
-| [api.ts](Atividade-GenAI/frontend/src/services/api.ts) | `askQuestion`, `executeSql`, `rehydrateConversation`, `resetConversation`, `getHealth`, `checkHealth` + classe `ApiError`. `API_BASE` configurável via `VITE_API_BASE`. |
-| [storage.ts](Atividade-GenAI/frontend/src/services/storage.ts) | `listConversations`, `saveConversation`, `deleteConversation`, `deleteAllConversations`. Chave: `ecom-agent-conversations`. Cap em 50 registros, ordenados por `createdAt` desc. |
+| [api.ts](src/services/api.ts) | `askQuestion`, `executeSql`, `rehydrateConversation`, `resetConversation`, `getHealth`, `checkHealth` + classe `ApiError`. `API_BASE` configurável via `VITE_API_BASE`. |
+| [storage.ts](src/services/storage.ts) | `listConversations`, `saveConversation`, `deleteConversation`, `deleteAllConversations`. Chave: `ecom-agent-conversations`. Cap em 50 registros, ordenados por `createdAt` desc. |
 
 ### Lib (3) — utilitários puros
 
 | Arquivo | Função |
 |---|---|
-| [csv.ts](Atividade-GenAI/frontend/src/lib/csv.ts) | `toCsv(cols, rows)` (separador `;`, escape RFC4180) + `downloadCsv` (UTF-8 com BOM para abrir direto no Excel). |
-| [markdown.ts](Atividade-GenAI/frontend/src/lib/markdown.ts) | `toMarkdown(conv)` converte uma conversa em `.md` (títulos, SQL em code fence, tabela de até 20 linhas, nota de linhas adicionais) + `downloadMarkdown`. |
-| [dateGroups.ts](Atividade-GenAI/frontend/src/lib/dateGroups.ts) | `groupByDate(items)` retorna buckets `Hoje / Ontem / Últimos 7 dias / Últimos 30 dias / Mais antigas` para o histórico do sidebar. |
+| [csv.ts](src/lib/csv.ts) | `toCsv(cols, rows)` (separador `;`, escape RFC4180) + `downloadCsv` (UTF-8 com BOM para abrir direto no Excel). |
+| [markdown.ts](src/lib/markdown.ts) | `toMarkdown(conv)` converte uma conversa em `.md` (títulos, SQL em code fence, tabela de até 20 linhas, nota de linhas adicionais) + `downloadMarkdown`. |
+| [dateGroups.ts](src/lib/dateGroups.ts) | `groupByDate(items)` retorna buckets `Hoje / Ontem / Últimos 7 dias / Últimos 30 dias / Mais antigas` para o histórico do sidebar. |
 
 ### Types (1)
 
-- [types/index.ts](Atividade-GenAI/frontend/src/types/index.ts) — contratos
+- [types/index.ts](src/types/index.ts) — contratos
   TypeScript espelhando a API do backend: `AskRequest/AskResponse`,
   `ExecuteSqlRequest/Response`, `Message` (union user/assistant),
   `ConversationRecord` (persistido), `SchemaSnapshot`, `TableInfo`,
@@ -265,7 +265,7 @@ sequenceDiagram
 
 ### Pages (1)
 
-- [ChatPage](Atividade-GenAI/frontend/src/pages/ChatPage.tsx) — a única
+- [ChatPage](src/pages/ChatPage.tsx) — a única
   "página". Composta assim:
 
 ```mermaid
@@ -356,7 +356,7 @@ está em input/textarea (exceto `Esc`).
 
 ### Export Markdown
 
-Botão "Exportar .md" no Header ([handleExport em ChatPage.tsx:88](Atividade-GenAI/frontend/src/pages/ChatPage.tsx)):
+Botão "Exportar .md" no Header ([handleExport em ChatPage.tsx:88](src/pages/ChatPage.tsx)):
 pega a conversa atual, chama `toMarkdown`, baixa o arquivo nomeado pelo
 título (sanitizado por `safeExportFilename`).
 
@@ -405,19 +405,19 @@ Crie `src/components/atoms/MeuAtom.tsx`. Mantenha:
 ### 9.2 Adicionar uma nova rota no backend
 
 Passo a passo para consumir uma nova rota `POST /xyz`:
-1. Em [services/api.ts](Atividade-GenAI/frontend/src/services/api.ts),
+1. Em [services/api.ts](src/services/api.ts),
    adicione `export async function xyz(...)` que chama `fetch` e lança
    `ApiError` em caso de `!res.ok`.
-2. Em [types/index.ts](Atividade-GenAI/frontend/src/types/index.ts),
+2. Em [types/index.ts](src/types/index.ts),
    adicione `XyzRequest` e `XyzResponse`.
 3. Se for chamado do chat, adicione o método ao hook
-   [useChat](Atividade-GenAI/frontend/src/hooks/useChat.ts); caso
+   [useChat](src/hooks/useChat.ts); caso
    contrário, crie um hook novo em `hooks/`.
 4. Passe o novo método como prop ao organismo que vai exibir o resultado.
 
 ### 9.3 Adicionar um novo tipo de gráfico
 
-Em [ChartPanel.tsx](Atividade-GenAI/frontend/src/components/organisms/ChartPanel.tsx):
+Em [ChartPanel.tsx](src/components/organisms/ChartPanel.tsx):
 1. Adicione o slug ao union `type ChartType`.
 2. Adicione um `IconButton` no toolbar setando `setChartType`.
 3. Adicione um bloco `{chartType === "novo" && (<SeuChart .../>)}` dentro do
@@ -427,14 +427,14 @@ Em [ChartPanel.tsx](Atividade-GenAI/frontend/src/components/organisms/ChartPanel
 
 Defina `VITE_API_BASE=http://seu-host:porta` antes do `pnpm dev`, ou edite
 `API_BASE` em
-[services/api.ts](Atividade-GenAI/frontend/src/services/api.ts).
+[services/api.ts](src/services/api.ts).
 
 ### 9.5 Ajustar a paleta
 
 Edite `theme.extend.colors.brand` em
-[tailwind.config.js](Atividade-GenAI/frontend/tailwind.config.js). Todas as
+[tailwind.config.js](tailwind.config.js). Todas as
 classes `brand-*` vão trocar automaticamente. O gradiente do `body` em
-[index.css](Atividade-GenAI/frontend/src/index.css) também usa tons verdes
+[index.css](src/index.css) também usa tons verdes
 — atualize lá se quiser mudar o fundo.
 
 ---
